@@ -2,41 +2,60 @@ import * as assert from "assert";
 import * as puppeteer from "puppeteer";
 import * as looksSame from "looks-same";
 import * as fs from "fs/promises";
+import * as process from "child_process";
+
 
 const html = `
 <html>
+
 <head>
-    <title>These are tests.</title>
+    <title>Testing elm-figma-autoflex</title>
     <style>
-    html, body {
-        padding: 0;
-        margin: 0;
-    }
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
+
 <body>
-    <div style="background-color: #FFFFFF; width: 600px; height: 572px; position: relative; overflow: hidden">
-        <div style="background-color: #C4C4C4; position: absolute; left: 205px; top: 48px; width: 458px; height: 154px;">
-        </div>
-    </div>
+    <div id="elm-root"></div>
 </body>
+
 </html>
 `;
 
+
+const elmInit = `
+Elm.MainTest.init({
+    node: document.getElementById("elm-root")
+});
+`;
+
+
 describe("elm-figma-tests", () => {
     it("has a golden Test/0", async () => {
+        const elmJs = await compileElm("src/MainTest.elm");
         const browser = await puppeteer.launch();
         try {
             const page = await browser.newPage();
+            
+            // Initialize the page
+            await page.setContent(html);
             await page.setViewport({
                 width: 600,
                 height: 572,
                 deviceScaleFactor: 1,
             });
-            await page.setContent(html);
+            await page.evaluate(elmJs + "\n" + elmInit);
+            await page.waitForSelector("div#test");
+
+            // Make a screenshot of the rendered content
             const imageBuffer = await page.screenshot({ fullPage: true });
             await fs.writeFile("test/result/Test/0.png", imageBuffer);
             const reference = await fs.readFile("test/golden/Test/0.png");
+            
+            // Test for screenshot equality with figma export
             try {
                 await imagesEqual(imageBuffer, reference);
                 await ensureDeleted("test/failures/Test/0.png");
@@ -50,6 +69,7 @@ describe("elm-figma-tests", () => {
         }
     });
 });
+
 
 function imageDiff(image0: Buffer, image1: Buffer): Promise<Buffer> {
     return new Promise((resolve, reject) => {
@@ -67,6 +87,7 @@ function imageDiff(image0: Buffer, image1: Buffer): Promise<Buffer> {
     });
 }
 
+
 function imagesEqual(imageBuffer: Buffer, path: Buffer): Promise<void> {
     return new Promise((resolve, reject) => {
         looksSame(imageBuffer, path, (error, { equal }) => {
@@ -79,8 +100,14 @@ function imagesEqual(imageBuffer: Buffer, path: Buffer): Promise<void> {
     });
 }
 
+
 async function ensureDeleted(path: string) {
     try {
         await fs.unlink(path);
     } catch(e) {}
+}
+
+async function compileElm(path: string): Promise<string> {
+    process.execSync(`elm make ${path} --output=dist/elm.js`);
+    return (await fs.readFile("dist/elm.js")).toString("utf-8");
 }
