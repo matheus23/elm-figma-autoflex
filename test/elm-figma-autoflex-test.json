@@ -21,10 +21,10 @@
                                 "type": "RECTANGLE",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                    "x": -1170.0,
-                                    "y": -263.0,
-                                    "width": 458.0,
-                                    "height": 154.0
+                                    "x": -1170,
+                                    "y": -263,
+                                    "width": 458,
+                                    "height": 154
                                 },
                                 "constraints": {
                                     "vertical": "TOP",
@@ -35,24 +35,24 @@
                                         "blendMode": "NORMAL",
                                         "type": "SOLID",
                                         "color": {
-                                            "r": 0.76862746477127075,
-                                            "g": 0.76862746477127075,
-                                            "b": 0.76862746477127075,
-                                            "a": 1.0
+                                            "r": 0.7686274647712708,
+                                            "g": 0.7686274647712708,
+                                            "b": 0.7686274647712708,
+                                            "a": 1
                                         }
                                     }
                                 ],
                                 "strokes": [],
-                                "strokeWeight": 1.0,
+                                "strokeWeight": 1,
                                 "strokeAlign": "INSIDE",
                                 "effects": []
                             }
                         ],
                         "absoluteBoundingBox": {
-                            "x": -1375.0,
-                            "y": -311.0,
-                            "width": 600.0,
-                            "height": 572.0
+                            "x": -1375,
+                            "y": -311,
+                            "width": 600,
+                            "height": 572
                         },
                         "constraints": {
                             "vertical": "TOP",
@@ -64,10 +64,10 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
@@ -76,21 +76,21 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
                         "strokes": [],
-                        "strokeWeight": 1.0,
+                        "strokeWeight": 1,
                         "strokeAlign": "INSIDE",
                         "backgroundColor": {
-                            "r": 1.0,
-                            "g": 1.0,
-                            "b": 1.0,
-                            "a": 1.0
+                            "r": 1,
+                            "g": 1,
+                            "b": 1,
+                            "a": 1
                         },
                         "exportSettings": [
                             {
@@ -98,7 +98,7 @@
                                 "format": "PNG",
                                 "constraint": {
                                     "type": "SCALE",
-                                    "value": 1.0
+                                    "value": 1
                                 }
                             }
                         ],
@@ -116,10 +116,10 @@
                                 "type": "RECTANGLE",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                    "x": -1170.0,
-                                    "y": 363.0,
-                                    "width": 458.0,
-                                    "height": 154.0
+                                    "x": -1170,
+                                    "y": 363,
+                                    "width": 458,
+                                    "height": 154
                                 },
                                 "constraints": {
                                     "vertical": "TOP",
@@ -130,24 +130,24 @@
                                         "blendMode": "NORMAL",
                                         "type": "SOLID",
                                         "color": {
-                                            "r": 0.76862746477127075,
-                                            "g": 0.76862746477127075,
-                                            "b": 0.76862746477127075,
-                                            "a": 1.0
+                                            "r": 0.7686274647712708,
+                                            "g": 0.7686274647712708,
+                                            "b": 0.7686274647712708,
+                                            "a": 1
                                         }
                                     }
                                 ],
                                 "strokes": [],
-                                "strokeWeight": 1.0,
+                                "strokeWeight": 1,
                                 "strokeAlign": "INSIDE",
                                 "effects": []
                             }
                         ],
                         "absoluteBoundingBox": {
-                            "x": -1375.0,
-                            "y": 315.0,
-                            "width": 459.0,
-                            "height": 431.0
+                            "x": -1375,
+                            "y": 315,
+                            "width": 459,
+                            "height": 431
                         },
                         "constraints": {
                             "vertical": "TOP",
@@ -159,10 +159,10 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
@@ -171,21 +171,21 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
                         "strokes": [],
-                        "strokeWeight": 1.0,
+                        "strokeWeight": 1,
                         "strokeAlign": "INSIDE",
                         "backgroundColor": {
-                            "r": 1.0,
-                            "g": 1.0,
-                            "b": 1.0,
-                            "a": 1.0
+                            "r": 1,
+                            "g": 1,
+                            "b": 1,
+                            "a": 1
                         },
                         "exportSettings": [
                             {
@@ -193,7 +193,7 @@
                                 "format": "PNG",
                                 "constraint": {
                                     "type": "SCALE",
-                                    "value": 1.0
+                                    "value": 1
                                 }
                             }
                         ],
@@ -212,10 +212,10 @@
                                 "type": "RECTANGLE",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                    "x": -229.0,
-                                    "y": 55.0,
-                                    "width": 190.0,
-                                    "height": 154.0
+                                    "x": -229,
+                                    "y": 55,
+                                    "width": 190,
+                                    "height": 154
                                 },
                                 "constraints": {
                                     "vertical": "BOTTOM",
@@ -226,24 +226,24 @@
                                         "blendMode": "NORMAL",
                                         "type": "SOLID",
                                         "color": {
-                                            "r": 0.76862746477127075,
-                                            "g": 0.76862746477127075,
-                                            "b": 0.76862746477127075,
-                                            "a": 1.0
+                                            "r": 0.7686274647712708,
+                                            "g": 0.7686274647712708,
+                                            "b": 0.7686274647712708,
+                                            "a": 1
                                         }
                                     }
                                 ],
                                 "strokes": [],
-                                "strokeWeight": 1.0,
+                                "strokeWeight": 1,
                                 "strokeAlign": "INSIDE",
                                 "effects": []
                             }
                         ],
                         "absoluteBoundingBox": {
-                            "x": -570.0,
-                            "y": -311.0,
-                            "width": 600.0,
-                            "height": 572.0
+                            "x": -570,
+                            "y": -311,
+                            "width": 600,
+                            "height": 572
                         },
                         "constraints": {
                             "vertical": "TOP",
@@ -255,10 +255,10 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
@@ -267,21 +267,21 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
                         "strokes": [],
-                        "strokeWeight": 1.0,
+                        "strokeWeight": 1,
                         "strokeAlign": "INSIDE",
                         "backgroundColor": {
-                            "r": 1.0,
-                            "g": 1.0,
-                            "b": 1.0,
-                            "a": 1.0
+                            "r": 1,
+                            "g": 1,
+                            "b": 1,
+                            "a": 1
                         },
                         "exportSettings": [
                             {
@@ -289,7 +289,7 @@
                                 "format": "PNG",
                                 "constraint": {
                                     "type": "SCALE",
-                                    "value": 1.0
+                                    "value": 1
                                 }
                             }
                         ],
@@ -307,10 +307,10 @@
                                 "type": "RECTANGLE",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                    "x": 304.0,
-                                    "y": 55.0,
-                                    "width": 462.0,
-                                    "height": 154.0
+                                    "x": 304,
+                                    "y": 55,
+                                    "width": 462,
+                                    "height": 154
                                 },
                                 "constraints": {
                                     "vertical": "BOTTOM",
@@ -321,24 +321,24 @@
                                         "blendMode": "NORMAL",
                                         "type": "SOLID",
                                         "color": {
-                                            "r": 0.76862746477127075,
-                                            "g": 0.76862746477127075,
-                                            "b": 0.76862746477127075,
-                                            "a": 1.0
+                                            "r": 0.7686274647712708,
+                                            "g": 0.7686274647712708,
+                                            "b": 0.7686274647712708,
+                                            "a": 1
                                         }
                                     }
                                 ],
                                 "strokes": [],
-                                "strokeWeight": 1.0,
+                                "strokeWeight": 1,
                                 "strokeAlign": "INSIDE",
                                 "effects": []
                             }
                         ],
                         "absoluteBoundingBox": {
-                            "x": 235.0,
-                            "y": -311.0,
-                            "width": 600.0,
-                            "height": 572.0
+                            "x": 235,
+                            "y": -311,
+                            "width": 600,
+                            "height": 572
                         },
                         "constraints": {
                             "vertical": "TOP",
@@ -350,10 +350,10 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
@@ -362,21 +362,21 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
                         "strokes": [],
-                        "strokeWeight": 1.0,
+                        "strokeWeight": 1,
                         "strokeAlign": "INSIDE",
                         "backgroundColor": {
-                            "r": 1.0,
-                            "g": 1.0,
-                            "b": 1.0,
-                            "a": 1.0
+                            "r": 1,
+                            "g": 1,
+                            "b": 1,
+                            "a": 1
                         },
                         "exportSettings": [
                             {
@@ -384,7 +384,7 @@
                                 "format": "PNG",
                                 "constraint": {
                                     "type": "SCALE",
-                                    "value": 1.0
+                                    "value": 1
                                 }
                             }
                         ],
@@ -402,10 +402,10 @@
                                 "type": "RECTANGLE",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                    "x": 304.0,
-                                    "y": 540.0,
-                                    "width": 321.0,
-                                    "height": 154.0
+                                    "x": 304,
+                                    "y": 540,
+                                    "width": 321,
+                                    "height": 154
                                 },
                                 "constraints": {
                                     "vertical": "BOTTOM",
@@ -416,24 +416,24 @@
                                         "blendMode": "NORMAL",
                                         "type": "SOLID",
                                         "color": {
-                                            "r": 0.76862746477127075,
-                                            "g": 0.76862746477127075,
-                                            "b": 0.76862746477127075,
-                                            "a": 1.0
+                                            "r": 0.7686274647712708,
+                                            "g": 0.7686274647712708,
+                                            "b": 0.7686274647712708,
+                                            "a": 1
                                         }
                                     }
                                 ],
                                 "strokes": [],
-                                "strokeWeight": 1.0,
+                                "strokeWeight": 1,
                                 "strokeAlign": "INSIDE",
                                 "effects": []
                             }
                         ],
                         "absoluteBoundingBox": {
-                            "x": 235.0,
-                            "y": 315.0,
-                            "width": 459.0,
-                            "height": 431.0
+                            "x": 235,
+                            "y": 315,
+                            "width": 459,
+                            "height": 431
                         },
                         "constraints": {
                             "vertical": "TOP",
@@ -445,10 +445,10 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
@@ -457,21 +457,21 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
                         "strokes": [],
-                        "strokeWeight": 1.0,
+                        "strokeWeight": 1,
                         "strokeAlign": "INSIDE",
                         "backgroundColor": {
-                            "r": 1.0,
-                            "g": 1.0,
-                            "b": 1.0,
-                            "a": 1.0
+                            "r": 1,
+                            "g": 1,
+                            "b": 1,
+                            "a": 1
                         },
                         "exportSettings": [
                             {
@@ -479,7 +479,7 @@
                                 "format": "PNG",
                                 "constraint": {
                                     "type": "SCALE",
-                                    "value": 1.0
+                                    "value": 1
                                 }
                             }
                         ],
@@ -498,10 +498,10 @@
                                 "type": "RECTANGLE",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                    "x": -370.0,
-                                    "y": 540.0,
-                                    "width": 190.0,
-                                    "height": 154.0
+                                    "x": -370,
+                                    "y": 540,
+                                    "width": 190,
+                                    "height": 154
                                 },
                                 "constraints": {
                                     "vertical": "BOTTOM",
@@ -512,24 +512,24 @@
                                         "blendMode": "NORMAL",
                                         "type": "SOLID",
                                         "color": {
-                                            "r": 0.76862746477127075,
-                                            "g": 0.76862746477127075,
-                                            "b": 0.76862746477127075,
-                                            "a": 1.0
+                                            "r": 0.7686274647712708,
+                                            "g": 0.7686274647712708,
+                                            "b": 0.7686274647712708,
+                                            "a": 1
                                         }
                                     }
                                 ],
                                 "strokes": [],
-                                "strokeWeight": 1.0,
+                                "strokeWeight": 1,
                                 "strokeAlign": "INSIDE",
                                 "effects": []
                             }
                         ],
                         "absoluteBoundingBox": {
-                            "x": -570.0,
-                            "y": 315.0,
-                            "width": 459.0,
-                            "height": 431.0
+                            "x": -570,
+                            "y": 315,
+                            "width": 459,
+                            "height": 431
                         },
                         "constraints": {
                             "vertical": "TOP",
@@ -541,10 +541,10 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
@@ -553,21 +553,21 @@
                                 "blendMode": "NORMAL",
                                 "type": "SOLID",
                                 "color": {
-                                    "r": 1.0,
-                                    "g": 1.0,
-                                    "b": 1.0,
-                                    "a": 1.0
+                                    "r": 1,
+                                    "g": 1,
+                                    "b": 1,
+                                    "a": 1
                                 }
                             }
                         ],
                         "strokes": [],
-                        "strokeWeight": 1.0,
+                        "strokeWeight": 1,
                         "strokeAlign": "INSIDE",
                         "backgroundColor": {
-                            "r": 1.0,
-                            "g": 1.0,
-                            "b": 1.0,
-                            "a": 1.0
+                            "r": 1,
+                            "g": 1,
+                            "b": 1,
+                            "a": 1
                         },
                         "exportSettings": [
                             {
@@ -575,7 +575,7 @@
                                 "format": "PNG",
                                 "constraint": {
                                     "type": "SCALE",
-                                    "value": 1.0
+                                    "value": 1
                                 }
                             }
                         ],
@@ -584,10 +584,10 @@
                     }
                 ],
                 "backgroundColor": {
-                    "r": 0.89803922176361084,
-                    "g": 0.89803922176361084,
-                    "b": 0.89803922176361084,
-                    "a": 1.0
+                    "r": 0.8980392217636108,
+                    "g": 0.8980392217636108,
+                    "b": 0.8980392217636108,
+                    "a": 1
                 },
                 "prototypeStartNodeID": null,
                 "prototypeDevice": {

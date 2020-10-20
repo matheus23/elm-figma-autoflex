@@ -6,6 +6,9 @@
         "noImplicitAny": true,
         "extendedDiagnostics": true
     },
+    "files": [
+        "fetch-figma.ts"
+    ],
     "include": [
         "test/**/*.ts"
     ]
