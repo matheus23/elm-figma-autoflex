@@ -1,0 +1,22 @@
+{
+  "name": "elm-figma-autoflex",
+  "version": "0.0.1",
+  "description": "Convert resizable figma frames to HTML/CSS that behaves the same.",
+  "main": "index.js",
+  "repository": "https://github.com/matheus23/elm-figma-autoflex",
+  "author": "Philipp Krüger",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha test/**/*.spec.ts"
+  },
+  "devDependencies": {
+    "@types/looks-same": "^4.1.0",
+    "@types/mocha": "^8.0.3",
+    "@types/puppeteer": "^3.0.2",
+    "looks-same": "^7.2.3",
+    "mocha": "^8.2.0",
+    "puppeteer": "^5.3.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}
