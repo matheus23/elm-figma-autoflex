@@ -7,7 +7,7 @@ Figma will have [really cool features](https://youtu.be/lWy4fB3G9Gc?t=282):
 * Variants
 * Interactive Components
 
-This will push figma prototypes to another level. They'll become more like code. Also, editing them will become more like using a UI builder.
+This will push figma prototypes to another level. They'll become more like code. Also, editing them will become more like using a UI builder. [1]
 
 I don't want to code the same flexbox layouts over and over again in code, when it is so much more fun to do in figma itself.
 
@@ -17,6 +17,10 @@ But I've always seperated the almost template-like modules in my elm code from t
 Elm-figma-autoflex will make most of the code in these template-like modules redundant.
 * No more need to write html or css.
 * The figma design and the implementation won't go out of sync. The code will depend on the figma design.
+
+Footnotes:
+1. Compared to a UI builder figma will be visually much more flexible, but encoding interaction will be much more restricted. This shows how it will be much more useful for marketing design, compared to app design. This also makes sense, since UI builders are ment to be used for app design mostly.
+
 
 ## To do
 

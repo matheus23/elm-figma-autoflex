@@ -26,9 +26,10 @@ const html = `
 `;
 
 
-const elmInit = `
+const elmInit = (figmaFile: string) => `
 Elm.MainTest.init({
-    node: document.getElementById("elm-root")
+    node: document.getElementById("elm-root"),
+    flags: ${JSON.stringify(figmaFile)}
 });
 `;
 
@@ -36,6 +37,7 @@ Elm.MainTest.init({
 describe("elm-figma-tests", () => {
     it("has a golden Test/0", async () => {
         const elmJs = await compileElm("src/MainTest.elm");
+        const figmaFile = await fs.readFile("test/elm-figma-autoflex-test.json", { encoding: "utf-8" });
         const browser = await puppeteer.launch();
         try {
             const page = await browser.newPage();
@@ -47,7 +49,7 @@ describe("elm-figma-tests", () => {
                 height: 572,
                 deviceScaleFactor: 1,
             });
-            await page.evaluate(elmJs + "\n" + elmInit);
+            await page.evaluate(elmJs + "\n" + elmInit(figmaFile));
             await page.waitForSelector("div#test");
 
             // Make a screenshot of the rendered content
@@ -109,5 +111,5 @@ async function ensureDeleted(path: string) {
 
 async function compileElm(path: string): Promise<string> {
     process.execSync(`elm make ${path} --output=dist/elm.js`);
-    return (await fs.readFile("dist/elm.js")).toString("utf-8");
+    return await fs.readFile("dist/elm.js", { encoding: "utf-8" });
 }
