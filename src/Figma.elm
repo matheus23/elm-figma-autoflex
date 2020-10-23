@@ -1,8 +1,7 @@
 module Figma exposing (..)
 
+import Codec exposing (Codec)
 import Color exposing (Color)
-import Json.Decode as Json
-import Json.Decode.Extra as Json
 
 
 {-| Represents Figma frames
@@ -14,12 +13,13 @@ type alias Frame =
     }
 
 
-decodeFrame : Json.Decoder Frame
-decodeFrame =
-    Json.succeed Frame
-        |> Json.andMap (Json.field "absoluteBoundingBox" decodeBoundingBox)
-        |> Json.andMap (Json.field "clipsContent" Json.bool)
-        |> Json.andMap (Json.field "background" (Json.list decodePaint))
+codecFrame : Codec Frame
+codecFrame =
+    Codec.object Frame
+        |> Codec.field "absoluteBoundingBox" .absoluteBoundingBox codecBoundingBox
+        |> Codec.field "clipsContent" .clipsContent Codec.bool
+        |> Codec.field "background" .background (Codec.list codecPaint)
+        |> Codec.buildObject
 
 
 {-| A rectangle expressing a bounding box in absolute coordinates.
@@ -32,13 +32,14 @@ type alias BoundingBox =
     }
 
 
-decodeBoundingBox : Json.Decoder BoundingBox
-decodeBoundingBox =
-    Json.succeed BoundingBox
-        |> Json.andMap (Json.field "x" Json.float)
-        |> Json.andMap (Json.field "y" Json.float)
-        |> Json.andMap (Json.field "width" Json.float)
-        |> Json.andMap (Json.field "height" Json.float)
+codecBoundingBox : Codec BoundingBox
+codecBoundingBox =
+    Codec.object BoundingBox
+        |> Codec.field "x" .x Codec.float
+        |> Codec.field "y" .y Codec.float
+        |> Codec.field "width" .width Codec.float
+        |> Codec.field "height" .height Codec.float
+        |> Codec.buildObject
 
 
 type alias Paint =
@@ -51,18 +52,20 @@ type alias Paint =
     }
 
 
-decodePaint : Json.Decoder Paint
-decodePaint =
-    Json.succeed Paint
-        |> Json.andMap (Json.field "blendMode" Json.string)
-        |> Json.andMap (Json.field "type" Json.string)
-        |> Json.andMap (Json.field "color" decodeColor)
+codecPaint : Codec Paint
+codecPaint =
+    Codec.object Paint
+        |> Codec.field "blendMode" .blendMode Codec.string
+        |> Codec.field "type" .type_ Codec.string
+        |> Codec.field "color" .color codecColor
+        |> Codec.buildObject
 
 
-decodeColor : Json.Decoder Color
-decodeColor =
-    Json.succeed Color.rgba
-        |> Json.andMap (Json.field "r" Json.float)
-        |> Json.andMap (Json.field "g" Json.float)
-        |> Json.andMap (Json.field "b" Json.float)
-        |> Json.andMap (Json.field "a" Json.float)
+codecColor : Codec Color
+codecColor =
+    Codec.object Color.rgba
+        |> Codec.field "r" (Color.toRgba >> .red) Codec.float
+        |> Codec.field "g" (Color.toRgba >> .green) Codec.float
+        |> Codec.field "b" (Color.toRgba >> .blue) Codec.float
+        |> Codec.field "a" (Color.toRgba >> .alpha) Codec.float
+        |> Codec.buildObject
