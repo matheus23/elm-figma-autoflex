@@ -1,6 +1,8 @@
 module MainTest exposing (main)
 
 import Browser
+import Codec
+import Color exposing (Color)
 import Figma
 import Html exposing (..)
 import Html.Attributes exposing (id, style)
@@ -9,7 +11,7 @@ import Json.Decode.Extra as Json
 
 
 type alias Model =
-    { info : Maybe ViewInfo }
+    { info : Maybe FrameInterpretation }
 
 
 type Msg
@@ -20,43 +22,71 @@ type alias Flags =
     String
 
 
-type alias ViewInfo =
-    { width : Float, height : Float }
+type alias FrameInterpretation =
+    { width : Float
+    , height : Float
+    , backgroundColor : Maybe Color
+    }
 
 
-parse : String -> Maybe ViewInfo
+interpretFrame : Figma.Frame -> Maybe FrameInterpretation
+interpretFrame frame =
+    frame.background
+        |> List.head
+        |> Maybe.map interpretSimpleSolidPaint
+        |> Maybe.map
+            (\backgroundColor ->
+                { width = frame.absoluteBoundingBox.width
+                , height = frame.absoluteBoundingBox.height
+                , backgroundColor = backgroundColor
+                }
+            )
+
+
+interpretSimpleSolidPaint : Figma.Paint -> Maybe Color
+interpretSimpleSolidPaint paint =
+    case ( paint.blendMode, paint.type_ ) of
+        ( "NORMAL", "SOLID" ) ->
+            Just paint.color
+
+        _ ->
+            Nothing
+
+
+parse : String -> Maybe FrameInterpretation
 parse figmaFileJson =
     figmaFileJson
         |> Json.decodeString parseFigmaFile
         |> Result.toMaybe
 
 
-parseFigmaFile : Json.Decoder ViewInfo
+parseFigmaFile : Json.Decoder FrameInterpretation
 parseFigmaFile =
     Json.at [ "document", "children" ] (Json.index 0 pageDecoder)
 
 
-pageDecoder : Json.Decoder ViewInfo
+pageDecoder : Json.Decoder FrameInterpretation
 pageDecoder =
-    Json.field "children" (Json.index 0 Figma.decodeFrame)
-        |> Json.map
-            (\frame ->
-                { width = frame.absoluteBoundingBox.width
-                , height = frame.absoluteBoundingBox.height
-                }
+    Json.field "children" (Json.index 0 (Codec.decoder Figma.codecFrame))
+        |> Json.andThen
+            (interpretFrame
+                >> Maybe.map Json.succeed
+                >> Maybe.withDefault (Json.fail "")
             )
 
 
-view : ViewInfo -> Html msg
-view { width, height } =
+view : FrameInterpretation -> Html msg
+view { width, height, backgroundColor } =
     div
-        [ id "test"
-        , style "background-color" "#FFFFFF"
-        , style "width" (px width) -- "600px"
-        , style "height" (px height) -- "572px"
-        , style "position" "relative"
-        , style "overflow" "hidden"
-        ]
+        (List.concat
+            [ [ id "test"
+              , style "position" "relative"
+              , style "overflow" "hidden"
+              ]
+            , backgroundColorAttributes backgroundColor
+            , sizeAttributes width height
+            ]
+        )
         [ div
             [ style "background-color" "#C4C4C4"
             , style "position" "absolute"
@@ -67,6 +97,20 @@ view { width, height } =
             ]
             []
         ]
+
+
+backgroundColorAttributes : Maybe Color -> List (Html.Attribute msg)
+backgroundColorAttributes maybeColor =
+    maybeColor
+        |> Maybe.map (\c -> [ style "background-color" (Color.toCssString c) ])
+        |> Maybe.withDefault []
+
+
+sizeAttributes : Float -> Float -> List (Html.Attribute msg)
+sizeAttributes width height =
+    [ style "width" (px width)
+    , style "height" (px height)
+    ]
 
 
 px : Float -> String
