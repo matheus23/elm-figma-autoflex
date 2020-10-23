@@ -8,6 +8,9 @@ import Html exposing (..)
 import Html.Attributes exposing (id, style)
 import Json.Decode as Json
 import Json.Decode.Extra as Json
+import Maybe.Extra as Maybe
+import Tree exposing (Tree)
+import Tree.Extra as Tree
 
 
 type alias Model =
@@ -67,12 +70,23 @@ parseFigmaFile =
 
 pageDecoder : Json.Decoder FrameInterpretation
 pageDecoder =
-    Json.field "children" (Json.index 0 (Codec.decoder Figma.codecFrame))
+    Json.field "children" (Json.index 0 (Codec.decoder Figma.codecFrameTree))
         |> Json.andThen
-            (interpretFrame
-                >> Maybe.map Json.succeed
-                >> Maybe.withDefault (Json.fail "")
+            (\node ->
+                [ node ]
+                    |> findNodeNamed "Test/0"
+                    |> Maybe.map Tree.label
+                    |> Maybe.andThen interpretFrame
+                    |> Maybe.map Json.succeed
+                    |> Maybe.withDefault (Json.fail "")
             )
+
+
+findNodeNamed : String -> List Figma.FrameTree -> Maybe Figma.FrameTree
+findNodeNamed needle trees =
+    trees
+        |> Maybe.traverse (Tree.find (\{ name } -> name == needle))
+        |> Maybe.andThen List.head
 
 
 view : FrameInterpretation -> Html msg
