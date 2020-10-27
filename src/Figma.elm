@@ -2,76 +2,23 @@ module Figma exposing (..)
 
 import Codec exposing (Codec)
 import Color exposing (Color)
-import Tree exposing (Tree)
-
-
-type alias FrameTree =
-    Tree Frame
-
-
-codecFrameTree : Codec FrameTree
-codecFrameTree =
-    Codec.recursive
-        (\recurse ->
-            codecFrameAndChildren
-                { build =
-                    \node children ->
-                        Tree.tree
-                            node
-                            (children
-                                |> Maybe.withDefault []
-                            )
-                , children = Tree.children >> Just
-                , frame = Tree.label
-                , codecChildren = Codec.list recurse
-                }
-        )
 
 
 {-| Represents Figma frames
 -}
 type alias Frame =
-    { name : String
-    , absoluteBoundingBox : BoundingBox
+    { absoluteBoundingBox : BoundingBox
     , clipsContent : Bool
     , background : List Paint
     }
 
 
-{-| This will assume that the list of children is empty.
--}
 codecFrame : Codec Frame
 codecFrame =
-    codecFrameAndChildren
-        { build = \frame _ -> frame
-        , children = \_ -> Nothing
-        , frame = \frame -> frame
-        , codecChildren = Codec.succeed []
-        }
-
-
-codecFrameAndChildren :
-    { build : Frame -> Maybe children -> a
-    , children : a -> Maybe children
-    , frame : a -> Frame
-    , codecChildren : Codec children
-    }
-    -> Codec a
-codecFrameAndChildren { build, children, frame, codecChildren } =
-    Codec.object
-        (\name absoluteBoundingBox clipsContent background ->
-            build
-                { name = name
-                , absoluteBoundingBox = absoluteBoundingBox
-                , clipsContent = clipsContent
-                , background = background
-                }
-        )
-        |> Codec.field "name" (frame >> .name) Codec.string
-        |> Codec.field "absoluteBoundingBox" (frame >> .absoluteBoundingBox) codecBoundingBox
-        |> Codec.field "clipsContent" (frame >> .clipsContent) Codec.bool
-        |> Codec.field "background" (frame >> .background) (Codec.list codecPaint)
-        |> Codec.maybeField "children" children codecChildren
+    Codec.object Frame
+        |> Codec.field "absoluteBoundingBox" .absoluteBoundingBox codecBoundingBox
+        |> Codec.field "clipsContent" .clipsContent Codec.bool
+        |> Codec.field "background" .background (Codec.list codecPaint)
         |> Codec.buildObject
 
 
