@@ -26,10 +26,13 @@ const html = `
 `;
 
 
-const elmInit = (figmaFile: string) => `
+const elmInit = (figmaFile: string, nodeName: string) => `
 Elm.MainTest.init({
     node: document.getElementById("elm-root"),
-    flags: ${JSON.stringify(figmaFile)}
+    flags: {
+        figmaFile: JSON.parse(${JSON.stringify(figmaFile)}),
+        nodeName: ${JSON.stringify(nodeName)}
+    }
 });
 `;
 
@@ -49,7 +52,7 @@ describe("elm-figma-tests", () => {
                 height: 572,
                 deviceScaleFactor: 1,
             });
-            await page.evaluate(elmJs + "\n" + elmInit(figmaFile));
+            await page.evaluate(elmJs + "\n" + elmInit(figmaFile, "Test/0"));
             await page.waitForSelector("div#test");
 
             // Make a screenshot of the rendered content

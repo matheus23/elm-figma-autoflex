@@ -22,12 +22,14 @@ type Msg
 
 
 type alias Flags =
-    String
+    { figmaFile : Json.Value
+    , nodeName : String
+    }
 
 
 init : Flags -> ( Model, Cmd msg )
-init figmaFileJson =
-    ( figmaFileJson
+init flags =
+    ( flags
         |> parse
         |> Maybe.map (\tree -> view tree Nothing)
         |> Maybe.map (List.singleton >> div [ id "test" ])
@@ -46,21 +48,22 @@ interpretSimpleSolidPaint paint =
             Nothing
 
 
-parse : String -> Maybe Figma.Tree
-parse figmaFileJson =
-    figmaFileJson
-        |> Json.decodeString parseFigmaFile
+parse : Flags -> Maybe Figma.Tree
+parse { figmaFile, nodeName } =
+    figmaFile
+        |> Json.decodeValue parseFigmaFile
         |> Result.toMaybe
+        |> Maybe.andThen (findNodeNamed nodeName)
 
 
-parseFigmaFile : Json.Decoder Figma.Tree
+parseFigmaFile : Json.Decoder (List Figma.Tree)
 parseFigmaFile =
     Json.at [ "document", "children" ] (Json.index 0 pageDecoder)
 
 
-pageDecoder : Json.Decoder Figma.Tree
+pageDecoder : Json.Decoder (List Figma.Tree)
 pageDecoder =
-    Json.field "children" (Json.index 0 Figma.decodeTree)
+    Json.field "children" (Json.map List.singleton (Json.index 0 Figma.decodeTree))
 
 
 findNodeNamed : String -> List Figma.Tree -> Maybe Figma.Tree
