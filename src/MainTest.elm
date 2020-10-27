@@ -29,7 +29,7 @@ init : Flags -> ( Model, Cmd msg )
 init figmaFileJson =
     ( figmaFileJson
         |> parse
-        |> Maybe.map view
+        |> Maybe.map (\tree -> view tree Nothing)
         |> Maybe.map (List.singleton >> div [ id "test" ])
         |> Maybe.withDefault (div [ id "test" ] [ text "Couldn't parse." ])
     , Cmd.none
@@ -66,27 +66,27 @@ pageDecoder =
 findNodeNamed : String -> List Figma.Tree -> Maybe Figma.Tree
 findNodeNamed needle trees =
     trees
-        |> Maybe.traverse (find (\{ name } -> name == needle))
+        |> Maybe.traverse (findFrame (\{ name } -> name == needle))
         |> Maybe.andThen List.head
 
 
-find : (Figma.FrameNode -> Bool) -> Figma.Tree -> Maybe Figma.Tree
-find predicate tree =
+findFrame : (Figma.FrameNode -> Bool) -> Figma.Tree -> Maybe Figma.Tree
+findFrame predicate tree =
     case tree of
-        Figma.Other ->
-            Nothing
-
         Figma.Frame frameNode children ->
             if predicate frameNode then
                 Just tree
 
             else
-                Maybe.traverse (find predicate) children
+                Maybe.traverse (findFrame predicate) children
                     |> Maybe.andThen List.head
 
+        _ ->
+            Nothing
 
-view : Figma.Tree -> Html msg
-view tree =
+
+view : Figma.Tree -> Maybe Figma.BoundingBox -> Html msg
+view tree parentBoundingBox =
     case tree of
         Figma.Frame frame children ->
             div
@@ -102,7 +102,18 @@ view tree =
                         |> sizeAttributes
                     ]
                 )
-                (List.map view children)
+                (List.map (\subtree -> view subtree (Just frame.absoluteBoundingBox)) children)
+
+        Figma.Rectangle rectangle ->
+            div
+                [ style "background-color" "#C4C4C4"
+                , style "position" "absolute"
+                , style "left" "205px"
+                , style "top" "48px"
+                , style "width" "458px"
+                , style "height" "154px"
+                ]
+                []
 
         Figma.Other ->
             div

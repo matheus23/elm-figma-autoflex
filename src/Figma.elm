@@ -8,6 +8,7 @@ import Json.Decode.Extra as D
 
 type Tree
     = Frame FrameNode (List Tree)
+    | Rectangle RectangleNode
     | Other
 
 
@@ -21,6 +22,11 @@ decodeTree =
                         D.succeed Frame
                             |> D.andMap (Codec.decoder codecFrameNode)
                             |> D.andMap (D.field "children" (D.list decodeTree))
+
+                    decodeRectangleNode =
+                        codecRectangleNode
+                            |> Codec.decoder
+                            |> D.map Rectangle
                 in
                 case type_ of
                     "COMPONENT" ->
@@ -31,6 +37,9 @@ decodeTree =
 
                     "FRAME" ->
                         decodeFrameNode
+
+                    "RECTANGLE" ->
+                        decodeRectangleNode
 
                     _ ->
                         D.succeed Other
@@ -54,6 +63,22 @@ codecFrameNode =
         |> Codec.field "absoluteBoundingBox" .absoluteBoundingBox codecBoundingBox
         |> Codec.field "clipsContent" .clipsContent Codec.bool
         |> Codec.field "background" .background (Codec.list codecPaint)
+        |> Codec.buildObject
+
+
+type alias RectangleNode =
+    { name : String
+    , absoluteBoundingBox : BoundingBox
+    , fills : List Paint
+    }
+
+
+codecRectangleNode : Codec RectangleNode
+codecRectangleNode =
+    Codec.object RectangleNode
+        |> Codec.field "name" .name Codec.string
+        |> Codec.field "absoluteBoundingBox" .absoluteBoundingBox codecBoundingBox
+        |> Codec.field "fills" .fills (Codec.list codecPaint)
         |> Codec.buildObject
 
 
