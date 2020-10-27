@@ -106,50 +106,58 @@ view tree parentBoundingBox =
 
         Figma.Rectangle rectangle ->
             div
-                [ style "background-color" "#C4C4C4"
-                , style "position" "absolute"
-                , style "left" "205px"
-                , style "top" "48px"
-                , style "width" "458px"
-                , style "height" "154px"
-                ]
+                (List.concat
+                    [ [ style "position" "absolute"
+                      ]
+                    , rectangle.fills
+                        |> List.head
+                        |> Maybe.andThen interpretSimpleSolidPaint
+                        |> backgroundColorAttributes
+                    , parentBoundingBox
+                        |> Maybe.map
+                            (\parent ->
+                                positioningAttributes
+                                    { parent = parent
+                                    , element = rectangle.absoluteBoundingBox
+                                    }
+                            )
+                        |> Maybe.withDefault []
+                    ]
+                )
                 []
 
         Figma.Other ->
-            div
-                [ style "background-color" "#C4C4C4"
-                , style "position" "absolute"
-                , style "left" "205px"
-                , style "top" "48px"
-                , style "width" "458px"
-                , style "height" "154px"
-                ]
-                []
+            text ""
 
 
+type alias Insets a =
+    { left : a
+    , top : a
+    , right : a
+    , bottom : a
+    }
 
-{-
-   div
-       (List.concat
-           [ [ id "test"
-             , style "position" "relative"
-             , style "overflow" "hidden"
-             ]
-           , backgroundColorAttributes backgroundColor
-           , sizeAttributes width height
-           ]
-       )
-       [ div
-           [ style "background-color" "#C4C4C4"
-           , style "position" "absolute"
-           , style "left" "205px"
-           , style "top" "48px"
-           , style "width" "458px"
-           , style "height" "154px"
-           ]
-           []
-       ]
--}
+
+boundingBoxInsets : { parent : Figma.BoundingBox, element : Figma.BoundingBox } -> Insets Float
+boundingBoxInsets { parent, element } =
+    { left = element.x - parent.x
+    , top = element.y - parent.y
+    , right = parent.x + parent.width - (element.x + element.width)
+    , bottom = parent.y + parent.height - (element.y + element.height)
+    }
+
+
+positioningAttributes : { parent : Figma.BoundingBox, element : Figma.BoundingBox } -> List (Html.Attribute msg)
+positioningAttributes bounds =
+    let
+        { left, top } =
+            boundingBoxInsets bounds
+    in
+    [ style "left" (px left)
+    , style "top" (px top)
+    , style "width" (px bounds.element.width)
+    , style "height" (px bounds.element.height)
+    ]
 
 
 backgroundColorAttributes : Maybe Color -> List (Html.Attribute msg)
