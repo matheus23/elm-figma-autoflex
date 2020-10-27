@@ -29,10 +29,10 @@ Footnotes:
 * [X] Test for screenshot equality
 * [X] Generate the html and css via elm
 * [X] Fetch the file json via the figma api
-* [ ] Clean up, maybe just revert.
+* [X] Clean up, maybe just revert.
   I think it can't parse the input at the moment, because it tries to parse the frame attributes from everything under the first node. But e.g. rectangles don't have a "children" field, so they fail.
-  * [ ] Merge codecFrameTree, codecFrame and codecFrameAndChildren
-  * [ ] Go for another abstraction than elm-rosetree. Maybe just do it direct?
+  * ~~[ ] Merge codecFrameTree, codecFrame and codecFrameAndChildren~~
+  * [X] Go for another abstraction than elm-rosetree. Maybe just do it direct?
 * [ ] Generate the html and css in elm by using the figma file json
 * [ ] Test all the frames in the figma file
 * [ ] Add more test frames to the figma file

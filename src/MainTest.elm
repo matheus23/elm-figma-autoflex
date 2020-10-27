@@ -32,7 +32,7 @@ type alias FrameInterpretation =
     }
 
 
-interpretFrame : Figma.Frame -> Maybe FrameInterpretation
+interpretFrame : Figma.FrameNode -> Maybe FrameInterpretation
 interpretFrame frame =
     frame.background
         |> List.head
@@ -70,23 +70,37 @@ parseFigmaFile =
 
 pageDecoder : Json.Decoder FrameInterpretation
 pageDecoder =
-    Json.field "children" (Json.index 0 (Codec.decoder Figma.codecFrameTree))
+    Json.field "children" (Json.index 0 Figma.decodeTree)
         |> Json.andThen
             (\node ->
                 [ node ]
                     |> findNodeNamed "Test/0"
-                    |> Maybe.map Tree.label
                     |> Maybe.andThen interpretFrame
                     |> Maybe.map Json.succeed
                     |> Maybe.withDefault (Json.fail "")
             )
 
 
-findNodeNamed : String -> List Figma.FrameTree -> Maybe Figma.FrameTree
+findNodeNamed : String -> List Figma.Tree -> Maybe Figma.FrameNode
 findNodeNamed needle trees =
     trees
-        |> Maybe.traverse (Tree.find (\{ name } -> name == needle))
+        |> Maybe.traverse (find (\{ name } -> name == needle))
         |> Maybe.andThen List.head
+
+
+find : (Figma.FrameNode -> Bool) -> Figma.Tree -> Maybe Figma.FrameNode
+find predicate tree =
+    case tree of
+        Figma.Other ->
+            Nothing
+
+        Figma.Frame frameNode children ->
+            if predicate frameNode then
+                Just frameNode
+
+            else
+                Maybe.traverse (find predicate) children
+                    |> Maybe.andThen List.head
 
 
 view : FrameInterpretation -> Html msg

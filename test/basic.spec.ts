@@ -38,7 +38,7 @@ describe("elm-figma-tests", () => {
     it("has a golden Test/0", async () => {
         const elmJs = await compileElm("src/MainTest.elm");
         const figmaFile = await fs.readFile("test/elm-figma-autoflex-test.json", { encoding: "utf-8" });
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({ dumpio: true });
         try {
             const page = await browser.newPage();
             

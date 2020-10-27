@@ -2,20 +2,55 @@ module Figma exposing (..)
 
 import Codec exposing (Codec)
 import Color exposing (Color)
+import Json.Decode as D
+import Json.Decode.Extra as D
+
+
+type Tree
+    = Frame FrameNode (List Tree)
+    | Other
+
+
+decodeTree : D.Decoder Tree
+decodeTree =
+    D.field "type" D.string
+        |> D.andThen
+            (\type_ ->
+                let
+                    decodeFrameNode =
+                        D.succeed Frame
+                            |> D.andMap (Codec.decoder codecFrameNode)
+                            |> D.andMap (D.field "children" (D.list decodeTree))
+                in
+                case type_ of
+                    "COMPONENT" ->
+                        decodeFrameNode
+
+                    "INSTANCE" ->
+                        decodeFrameNode
+
+                    "FRAME" ->
+                        decodeFrameNode
+
+                    _ ->
+                        D.succeed Other
+            )
 
 
 {-| Represents Figma frames
 -}
-type alias Frame =
-    { absoluteBoundingBox : BoundingBox
+type alias FrameNode =
+    { name : String
+    , absoluteBoundingBox : BoundingBox
     , clipsContent : Bool
     , background : List Paint
     }
 
 
-codecFrame : Codec Frame
-codecFrame =
-    Codec.object Frame
+codecFrameNode : Codec FrameNode
+codecFrameNode =
+    Codec.object FrameNode
+        |> Codec.field "name" .name Codec.string
         |> Codec.field "absoluteBoundingBox" .absoluteBoundingBox codecBoundingBox
         |> Codec.field "clipsContent" .clipsContent Codec.bool
         |> Codec.field "background" .background (Codec.list codecPaint)
