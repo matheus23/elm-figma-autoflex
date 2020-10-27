@@ -50,9 +50,20 @@ interpretSimpleSolidPaint paint =
 
 parse : Flags -> Maybe Figma.Tree
 parse { figmaFile, nodeName } =
-    figmaFile
-        |> Json.decodeValue parseFigmaFile
-        |> Result.toMaybe
+    (case
+        figmaFile
+            |> Json.decodeValue parseFigmaFile
+     of
+        Err error ->
+            let
+                _ =
+                    Debug.log "error" error
+            in
+            Nothing
+
+        Ok tree ->
+            Just tree
+    )
         |> Maybe.andThen (findNodeNamed nodeName)
 
 
@@ -63,14 +74,14 @@ parseFigmaFile =
 
 pageDecoder : Json.Decoder (List Figma.Tree)
 pageDecoder =
-    Json.field "children" (Json.map List.singleton (Json.index 0 Figma.decodeTree))
+    Json.field "children" (Json.list Figma.decodeTree)
 
 
 findNodeNamed : String -> List Figma.Tree -> Maybe Figma.Tree
 findNodeNamed needle trees =
     trees
-        |> Maybe.traverse (findFrame (\{ name } -> name == needle))
-        |> Maybe.andThen List.head
+        |> List.map (findFrame (\{ name } -> name == needle))
+        |> Maybe.orList
 
 
 findFrame : (Figma.FrameNode -> Bool) -> Figma.Tree -> Maybe Figma.Tree
@@ -81,8 +92,9 @@ findFrame predicate tree =
                 Just tree
 
             else
-                Maybe.traverse (findFrame predicate) children
-                    |> Maybe.andThen List.head
+                children
+                    |> List.map (findFrame predicate)
+                    |> Maybe.orList
 
         _ ->
             Nothing
