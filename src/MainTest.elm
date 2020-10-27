@@ -14,7 +14,7 @@ import Tree.Extra as Tree
 
 
 type alias Model =
-    { info : Maybe FrameInterpretation }
+    Html Never
 
 
 type Msg
@@ -25,25 +25,15 @@ type alias Flags =
     String
 
 
-type alias FrameInterpretation =
-    { width : Float
-    , height : Float
-    , backgroundColor : Maybe Color
-    }
-
-
-interpretFrame : Figma.FrameNode -> Maybe FrameInterpretation
-interpretFrame frame =
-    frame.background
-        |> List.head
-        |> Maybe.map interpretSimpleSolidPaint
-        |> Maybe.map
-            (\backgroundColor ->
-                { width = frame.absoluteBoundingBox.width
-                , height = frame.absoluteBoundingBox.height
-                , backgroundColor = backgroundColor
-                }
-            )
+init : Flags -> ( Model, Cmd msg )
+init figmaFileJson =
+    ( figmaFileJson
+        |> parse
+        |> Maybe.map view
+        |> Maybe.map (List.singleton >> div [ id "test" ])
+        |> Maybe.withDefault (div [ id "test" ] [ text "Couldn't parse." ])
+    , Cmd.none
+    )
 
 
 interpretSimpleSolidPaint : Figma.Paint -> Maybe Color
@@ -56,39 +46,31 @@ interpretSimpleSolidPaint paint =
             Nothing
 
 
-parse : String -> Maybe FrameInterpretation
+parse : String -> Maybe Figma.Tree
 parse figmaFileJson =
     figmaFileJson
         |> Json.decodeString parseFigmaFile
         |> Result.toMaybe
 
 
-parseFigmaFile : Json.Decoder FrameInterpretation
+parseFigmaFile : Json.Decoder Figma.Tree
 parseFigmaFile =
     Json.at [ "document", "children" ] (Json.index 0 pageDecoder)
 
 
-pageDecoder : Json.Decoder FrameInterpretation
+pageDecoder : Json.Decoder Figma.Tree
 pageDecoder =
     Json.field "children" (Json.index 0 Figma.decodeTree)
-        |> Json.andThen
-            (\node ->
-                [ node ]
-                    |> findNodeNamed "Test/0"
-                    |> Maybe.andThen interpretFrame
-                    |> Maybe.map Json.succeed
-                    |> Maybe.withDefault (Json.fail "")
-            )
 
 
-findNodeNamed : String -> List Figma.Tree -> Maybe Figma.FrameNode
+findNodeNamed : String -> List Figma.Tree -> Maybe Figma.Tree
 findNodeNamed needle trees =
     trees
         |> Maybe.traverse (find (\{ name } -> name == needle))
         |> Maybe.andThen List.head
 
 
-find : (Figma.FrameNode -> Bool) -> Figma.Tree -> Maybe Figma.FrameNode
+find : (Figma.FrameNode -> Bool) -> Figma.Tree -> Maybe Figma.Tree
 find predicate tree =
     case tree of
         Figma.Other ->
@@ -96,35 +78,67 @@ find predicate tree =
 
         Figma.Frame frameNode children ->
             if predicate frameNode then
-                Just frameNode
+                Just tree
 
             else
                 Maybe.traverse (find predicate) children
                     |> Maybe.andThen List.head
 
 
-view : FrameInterpretation -> Html msg
-view { width, height, backgroundColor } =
-    div
-        (List.concat
-            [ [ id "test"
-              , style "position" "relative"
-              , style "overflow" "hidden"
-              ]
-            , backgroundColorAttributes backgroundColor
-            , sizeAttributes width height
-            ]
-        )
-        [ div
-            [ style "background-color" "#C4C4C4"
-            , style "position" "absolute"
-            , style "left" "205px"
-            , style "top" "48px"
-            , style "width" "458px"
-            , style "height" "154px"
-            ]
-            []
-        ]
+view : Figma.Tree -> Html msg
+view tree =
+    case tree of
+        Figma.Frame frame children ->
+            div
+                (List.concat
+                    [ [ style "position" "absolute"
+                      , style "overflow" "hidden"
+                      ]
+                    , frame.background
+                        |> List.head
+                        |> Maybe.andThen interpretSimpleSolidPaint
+                        |> backgroundColorAttributes
+                    , frame.absoluteBoundingBox
+                        |> sizeAttributes
+                    ]
+                )
+                (List.map view children)
+
+        Figma.Other ->
+            div
+                [ style "background-color" "#C4C4C4"
+                , style "position" "absolute"
+                , style "left" "205px"
+                , style "top" "48px"
+                , style "width" "458px"
+                , style "height" "154px"
+                ]
+                []
+
+
+
+{-
+   div
+       (List.concat
+           [ [ id "test"
+             , style "position" "relative"
+             , style "overflow" "hidden"
+             ]
+           , backgroundColorAttributes backgroundColor
+           , sizeAttributes width height
+           ]
+       )
+       [ div
+           [ style "background-color" "#C4C4C4"
+           , style "position" "absolute"
+           , style "left" "205px"
+           , style "top" "48px"
+           , style "width" "458px"
+           , style "height" "154px"
+           ]
+           []
+       ]
+-}
 
 
 backgroundColorAttributes : Maybe Color -> List (Html.Attribute msg)
@@ -134,8 +148,8 @@ backgroundColorAttributes maybeColor =
         |> Maybe.withDefault []
 
 
-sizeAttributes : Float -> Float -> List (Html.Attribute msg)
-sizeAttributes width height =
+sizeAttributes : Figma.BoundingBox -> List (Html.Attribute msg)
+sizeAttributes { width, height } =
     [ style "width" (px width)
     , style "height" (px height)
     ]
@@ -153,16 +167,8 @@ px f =
 main : Program Flags Model Msg
 main =
     Browser.element
-        { init = \flags -> ( { info = parse flags }, Cmd.none )
+        { init = init
         , update = \msg model -> ( model, Cmd.none )
-        , view =
-            \model ->
-                model.info
-                    |> Maybe.map view
-                    |> Maybe.withDefault
-                        (div
-                            [ id "test" ]
-                            [ text "Couldn't parse." ]
-                        )
+        , view = \model -> Html.map never model
         , subscriptions = \model -> Sub.none
         }
