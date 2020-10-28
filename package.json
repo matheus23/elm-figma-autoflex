@@ -7,7 +7,7 @@
   "author": "Philipp Krüger",
   "license": "MIT",
   "scripts": {
-    "test": "mocha test/**/*.spec.ts",
+    "test": "mocha --delay test/**/*.spec.ts",
     "fetch-figma": "ts-node fetch-figma.ts"
   },
   "devDependencies": {

@@ -33,6 +33,9 @@ Footnotes:
   I think it can't parse the input at the moment, because it tries to parse the frame attributes from everything under the first node. But e.g. rectangles don't have a "children" field, so they fail.
   * ~~[ ] Merge codecFrameTree, codecFrame and codecFrameAndChildren~~
   * [X] Go for another abstraction than elm-rosetree. Maybe just do it direct?
-* [ ] Generate the html and css in elm by using the figma file json
+* [X] Generate the html and css in elm by using the figma file json
 * [ ] Test all the frames in the figma file
+  * [X] Extract puppeteer setup from the test
+  * [X] Enumerate all frames before testing
+  * [ ] Find out a way to connect the names of exported frames to the export names from figma.
 * [ ] Add more test frames to the figma file
