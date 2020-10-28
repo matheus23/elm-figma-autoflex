@@ -38,13 +38,18 @@ Elm.MainTest.init({
 
 
 describe("elm-figma-tests", () => {
-    it("has a golden Test/0", async () => {
+    it("has a golden Test/0", testFigmaGolden("Test/0"));
+});
+
+
+function testFigmaGolden(nodeName: string) {
+    return async () => {
         const elmJs = await compileElm("src/MainTest.elm");
         const figmaFile = await fs.readFile("test/elm-figma-autoflex-test.json", { encoding: "utf-8" });
         const browser = await puppeteer.launch({ dumpio: true });
         try {
             const page = await browser.newPage();
-            
+
             // Initialize the page
             await page.setContent(html);
             await page.setViewport({
@@ -52,28 +57,28 @@ describe("elm-figma-tests", () => {
                 height: 572,
                 deviceScaleFactor: 1,
             });
-            await page.evaluate(elmJs + "\n" + elmInit(figmaFile, "Test/0"));
+            await page.evaluate(elmJs + "\n" + elmInit(figmaFile, nodeName));
             await page.waitForSelector("div#test");
 
             // Make a screenshot of the rendered content
             const imageBuffer = await page.screenshot({ fullPage: true });
-            await fs.writeFile("test/result/Test/0.png", imageBuffer);
-            const reference = await fs.readFile("test/golden/Test/0.png");
-            
+            await fs.writeFile(`test/result/${nodeName}.png`, imageBuffer);
+            const reference = await fs.readFile(`test/golden/${nodeName}.png`);
+
             // Test for screenshot equality with figma export
             try {
                 await imagesEqual(imageBuffer, reference);
-                await ensureDeleted("test/failures/Test/0.png");
+                await ensureDeleted(`test/failures/${nodeName}.png`);
             } catch (e) {
                 const diff = await imageDiff(imageBuffer, reference);
-                await fs.writeFile("test/failures/Test/0.png", diff);
+                await fs.writeFile(`test/failures/${nodeName}.png`, diff);
                 assert.fail("There is a difference in the images");
             }
         } finally {
             await browser.close();
         }
-    });
-});
+    }
+}
 
 
 function imageDiff(image0: Buffer, image1: Buffer): Promise<Buffer> {
@@ -109,7 +114,7 @@ function imagesEqual(imageBuffer: Buffer, path: Buffer): Promise<void> {
 async function ensureDeleted(path: string) {
     try {
         await fs.unlink(path);
-    } catch(e) {}
+    } catch (e) { }
 }
 
 async function compileElm(path: string): Promise<string> {
